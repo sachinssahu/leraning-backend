@@ -1,12 +1,22 @@
 // require('dotenv').config({path: "./env"})
 import dotenv from "dotenv";
-import connectDB from "./db/db-connection.js";
+import connectDB from "./db/dbConnection.js";
+import {app} from "./app.js"
 
 dotenv.config({
-    path: "./env",
+    path: "./.env",
 });
 
-connectDB();
+connectDB()
+    .then(() => {
+        (app.listen(process.env.PORT || 8000,
+            () => {
+                `serever is running at port: ${process.env.PORT}`;
+            }));
+    })
+    .catch((err) => {
+        console.log("mongoDB connection failed on catch", err);
+    });
 
 /* 
 Always uses try catch while connecting dB because there is always a chance of connection failure
